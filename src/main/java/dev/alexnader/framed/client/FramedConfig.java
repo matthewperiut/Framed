@@ -1,4 +1,4 @@
-package dev.alexnader.framed.client;
+/*package dev.alexnader.framed.client;
 
 import dev.inkwell.conrad.api.Config;
 import dev.inkwell.conrad.api.value.ValueKey;
@@ -23,3 +23,4 @@ public class FramedConfig extends Config<OwenElement> {
         return SaveType.ROOT;
     }
 }
+*/

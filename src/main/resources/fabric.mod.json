@@ -26,9 +26,6 @@
     ],
     "client": [
       "dev.alexnader.framed.client.FramedClient"
-    ],
-    "config": [
-      "dev.alexnader.framed.client.FramedConfig"
     ]
   },
   "mixins": [
@@ -37,18 +34,15 @@
 
   "depends": {
     "fabricloader": "*",
-    "fabric": "${fapiVersion}",
+    "fabric": "*",
     "minecraft": "1.16.x",
-    "libgui": "${libguiVersion}",
-    "json-model-extensions": "${jmxVersion}",
-    "frex": "${frexVersion}"
+    "libgui": "*",
+    "json-model-extensions": "*",
+    "frex": "*"
   },
   "suggests": {
     "canvas": "*",
     "couplings": "*",
     "modmenu": "*"
-  },
-  "conflicts": {
-    "sodium": "*"
   }
 }
