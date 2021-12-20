@@ -21,7 +21,7 @@ import static dev.alexnader.framed.client.FramedClient.CLIENT_OVERLAYS;
 
 @Environment(EnvType.CLIENT)
 public abstract class Overlay implements ToOptional<Overlay> {
-    public static Overlay ofNullable(final @Nullable Some some) {
+    public static Overlay ofNullable(final @Nullable dev.alexnader.framed.client.assets.overlay.Overlay.Some some) {
         if (some == null) {
             return NONE;
         } else {

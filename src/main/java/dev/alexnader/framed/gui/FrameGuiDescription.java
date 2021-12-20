@@ -16,7 +16,7 @@ public class FrameGuiDescription extends SyncedGuiDescription {
             syncId,
             playerInventory,
             context,
-            context.run((world, pos) -> (FrameBlockEntity) world.getBlockEntity(pos))
+            context.get((world, pos) -> (FrameBlockEntity) world.getBlockEntity(pos))
                 .orElseThrow(() -> new IllegalArgumentException("FrameGuiDescription can only be used with FrameBlockEntity."))
         );
     }

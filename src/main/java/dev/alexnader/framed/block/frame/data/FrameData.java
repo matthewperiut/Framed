@@ -5,8 +5,8 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.util.Identifier;
 
@@ -19,25 +19,25 @@ import java.util.stream.Collectors;
 import static dev.alexnader.framed.Framed.OVERLAYS;
 
 public class FrameData {
-    private static Optional<ItemStack>[] itemsFromTag(final Sections sections, final ListTag tag) {
+    private static Optional<ItemStack>[] itemsFromTag(final Sections sections, final NbtList tag) {
         final Optional<ItemStack>[] items = sections.makeItems();
 
         for (int i = 0, size = tag.size(); i < size; i++) {
-            final CompoundTag stackTag = tag.getCompound(i);
+            final NbtCompound stackTag = tag.getCompound(i);
             final int slot = stackTag.getByte("Slot") & 255;
             if (sections.containsSlot(slot)) {
-                items[slot] = Optional.of(ItemStack.fromTag(stackTag));
+                items[slot] = Optional.of(ItemStack.fromNbt(stackTag));
             }
         }
 
         return items;
     }
 
-    private static Optional<BlockState>[] baseStatesFromTag(final Sections sections, final ListTag tag) {
+    private static Optional<BlockState>[] baseStatesFromTag(final Sections sections, final NbtList tag) {
         final Optional<BlockState>[] baseStates = sections.makeBaseStates();
 
         for (int i = 0, size = tag.size(); i < size; i++) {
-            final CompoundTag stateTag = tag.getCompound(i);
+            final NbtCompound stateTag = tag.getCompound(i);
             final int realIndex = stateTag.getInt("i");
             baseStates[realIndex] = BlockState.CODEC.decode(new Dynamic<>(NbtOps.INSTANCE, stateTag)).result().map(Pair::getFirst);
         }
@@ -45,7 +45,7 @@ public class FrameData {
         return baseStates;
     }
 
-    public static FrameData fromTag(final CompoundTag tag) {
+    public static FrameData fromTag(final NbtCompound tag) {
         final Sections sections = Sections.fromTag(tag.getList("format", 3));
 
         return new FrameData(
@@ -93,17 +93,17 @@ public class FrameData {
         return baseStates;
     }
 
-    public CompoundTag toTag() {
-        final CompoundTag tag = new CompoundTag();
+    public NbtCompound toTag() {
+        final NbtCompound tag = new NbtCompound();
 
         tag.put("format", sections.toTag());
 
-        final ListTag itemsTag = new ListTag();
+        final NbtList itemsTag = new NbtList();
         for (int i = 0, size = items.length; i < size; i++) {
             final int i2 = i;
             items[i].ifPresent(stack -> {
-                final CompoundTag stackTag = new CompoundTag();
-                stack.toTag(stackTag);
+                final NbtCompound stackTag = new NbtCompound();
+                stack.writeNbt(stackTag);
                 stackTag.putByte("Slot", (byte)i2);
                 itemsTag.add(stackTag);
             });
@@ -112,11 +112,11 @@ public class FrameData {
             tag.put("Items", itemsTag);
         }
 
-        final ListTag baseStatesTag = new ListTag();
+        final NbtList baseStatesTag = new NbtList();
         for (int i = 0, size = baseStates.length; i < size; i++) {
             final int i2 = i;
             baseStates[i].ifPresent(baseState -> {
-                final CompoundTag baseStateTag = new CompoundTag();
+                final NbtCompound baseStateTag = new NbtCompound();
                 baseStateTag.putInt("i", i2);
                 //noinspection OptionalGetWithoutIsPresent
                 baseStatesTag.add(

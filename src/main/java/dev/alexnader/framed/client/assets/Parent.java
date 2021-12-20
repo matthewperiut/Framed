@@ -17,7 +17,7 @@ public abstract class Parent implements ToOptional<Parent> {
         if (parentId == null) {
             return NONE;
         } else {
-            return new Some(parentId);
+            return new dev.alexnader.framed.client.assets.Parent.Some(parentId);
         }
     }
 

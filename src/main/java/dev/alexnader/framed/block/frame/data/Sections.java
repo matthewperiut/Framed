@@ -3,9 +3,8 @@ package dev.alexnader.framed.block.frame.data;
 import dev.alexnader.framed.util.Section;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.IntTag;
-import net.minecraft.nbt.ListTag;
-
+import net.minecraft.nbt.NbtInt;
+import net.minecraft.nbt.NbtList;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -17,8 +16,8 @@ public class Sections {
     public static final int OVERLAY_INDEX = 1;
     public static final int SPECIAL_INDEX = 2;
 
-    public static Sections fromTag(final ListTag tag) {
-        return new Sections(makeSections(tag.stream().mapToInt(t -> ((IntTag) t).getInt())));
+    public static Sections fromTag(final NbtList tag) {
+        return new Sections(makeSections(tag.stream().mapToInt(t -> ((NbtInt) t).intValue())));
     }
 
     private static Section[] makeSections(final IntStream sizes) {
@@ -90,11 +89,11 @@ public class Sections {
         return baseStates;
     }
 
-    public ListTag toTag() {
-        final ListTag tag = new ListTag();
+    public NbtList toTag() {
+        final NbtList tag = new NbtList();
 
         for (final Section section : sections) {
-            tag.add(IntTag.of(section.size()));
+            tag.add(NbtInt.of(section.size()));
         }
 
         return tag;

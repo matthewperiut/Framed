@@ -17,7 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
@@ -247,25 +247,25 @@ public class FrameBlockEntity extends LockableContainerBlockEntity implements Ex
     }
 
     @Override
-    public CompoundTag toTag(final CompoundTag tag) {
+    public NbtCompound writeNbt(final NbtCompound tag) {
         toClientTag(tag);
-        return super.toTag(tag);
+        return super.writeNbt(tag);
     }
 
     @Override
-    public void fromTag(final BlockState state, final CompoundTag tag) {
+    public void fromTag(final BlockState state, final NbtCompound tag) {
         fromClientTag(tag);
         super.fromTag(state, tag);
     }
 
     @Override
-    public CompoundTag toClientTag(final CompoundTag tag) {
+    public NbtCompound toClientTag(final NbtCompound tag) {
         tag.put("frameData", data.toTag());
         return tag;
     }
 
     @Override
-    public void fromClientTag(final CompoundTag compoundTag) {
+    public void fromClientTag(final NbtCompound compoundTag) {
         data = FrameData.fromTag(compoundTag.getCompound("frameData"));
         this.markDirty();
     }

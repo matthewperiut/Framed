@@ -51,7 +51,7 @@ public class FramedBlocks extends Registrar<Block> {
                 .luminance(state -> Boolean.TRUE.equals(state.get(Properties.LIT)) ? 15 : 0);
 
         final AbstractBlock.Settings frameSettings = makeSettings.apply(Material.WOOD);
-        final AbstractBlock.Settings torchFrameSettings = makeSettings.apply(Material.SUPPORTED)
+        final AbstractBlock.Settings torchFrameSettings = makeSettings.apply(Material.DECORATION)
             .noCollision()
             .breakInstantly()
             .luminance(state -> Boolean.TRUE.equals(state.get(Properties.LIT)) ? 15 : 14);

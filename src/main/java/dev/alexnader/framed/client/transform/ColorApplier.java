@@ -15,7 +15,7 @@ public abstract class ColorApplier implements ToOptional<ColorApplier> {
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     public static ColorApplier ofOptional(final OptionalInt optional) {
         if (optional.isPresent()) {
-            return new Some(optional.getAsInt());
+            return new dev.alexnader.framed.client.transform.ColorApplier.Some(optional.getAsInt());
         } else {
             return NONE;
         }

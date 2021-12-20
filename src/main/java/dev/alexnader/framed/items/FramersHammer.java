@@ -11,7 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -58,7 +58,7 @@ public class FramersHammer extends Item {
     }
 
     public static class Data {
-        public static Data fromTag(final CompoundTag tag) {
+        public static Data fromTag(final NbtCompound tag) {
             return new Data(
                 tag.contains("storedData")
                     ? FrameData.fromTag(tag.getCompound("storedData"))
@@ -173,9 +173,9 @@ public class FramersHammer extends Item {
         }
     }
 
-    private CompoundTag getTagOrAssignDefault(final ItemStack stack) {
+    private NbtCompound getTagOrAssignDefault(final ItemStack stack) {
         if (stack.getTag() == null) {
-            final CompoundTag tag = new CompoundTag();
+            final NbtCompound tag = new NbtCompound();
             tag.putString("mode", CopyMode.DEFAULT.toString());
             stack.setTag(tag);
         }
@@ -184,7 +184,7 @@ public class FramersHammer extends Item {
 
     @Override
     public ActionResult useOnBlock(final ItemUsageContext context) {
-        final CompoundTag tag = getTagOrAssignDefault(context.getStack());
+        final NbtCompound tag = getTagOrAssignDefault(context.getStack());
         final Data data = Data.fromTag(tag);
 
         final BlockPos pos = context.getBlockPos();
@@ -229,7 +229,7 @@ public class FramersHammer extends Item {
         }
 
         final ItemStack stack = user.getStackInHand(hand);
-        final CompoundTag tag = getTagOrAssignDefault(stack);
+        final NbtCompound tag = getTagOrAssignDefault(stack);
         final CopyMode mode = CopyMode.fromStringOrDefault(tag.getString("mode"));
 
         final CopyMode newMode = mode.next();
